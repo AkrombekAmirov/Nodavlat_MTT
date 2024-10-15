@@ -1,5 +1,12 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+list_regioin = ["reg0", "reg1", "reg2", "reg3", "reg4", "reg5", "reg6", "reg7", "reg8", "reg9", "reg10", "reg11",
+                "reg12", "reg13"]
+list_region1 = ["Toshkent viloyati", "Toshkent shahri", "Samarqand viloyati", "Namangan viloyati", "Andijon viloyati",
+                "Fargona viloyati", "Qashqadaryo viloyati", "Surxondaryo viloyati", "Jizzax viloyati",
+                "Xorazm viloyati", "Navoiy viloyati", "Buxoro viloyati", "Sirdaryo viloyati",
+                "Qoraqalpogʻiston Respublikasi"]
+
 Toshkent_viloyat = [
     "Bekobod tumani",
     "Boʻstonliq tumani",
@@ -241,7 +248,8 @@ Qoraqalpogiston = [
 ]
 
 list_tuman = ["Amudaryo tumani", "Beruniy tumani", "Chimboy tumani", "Ellikqalʼa tumani", "Kegeyli tumani",
-              "Moʻynoq tumani", "Nukus tumani", "Nukus shahri", "Qanlikoʻl tumani", "Qoʻngʻirot tumani", "Qoraoʻzak tumani",
+              "Moʻynoq tumani", "Nukus tumani", "Nukus shahri", "Qanlikoʻl tumani", "Qoʻngʻirot tumani",
+              "Qoraoʻzak tumani",
               "Shumanay tumani", "Taxtakoʻpir tumani", "Toʻrtkoʻl tumani", "Xoʻjayli tumani", "Taxiatosh tumani",
               "Boʻzatov tumani", "Oqoltin tumani", "Boyovut tumani", "Guliston tumani", "Xovos tumani",
               "Mirzaobod tumani", "Sayxunobod tumani", "Sardoba tumani", "Sirdaryo tumani", "Yangiyer shahri",

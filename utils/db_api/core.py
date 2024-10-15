@@ -17,8 +17,8 @@ class DatabaseService:
             print(f"Added: {instance}")
         return instance.id
 
-    def add_user(self, telegram_id: str, name: str, username: str, telegram_number: Optional[str] = None):
-        return self.__add(User(name=name, username=username, telegram_id=telegram_id, telegram_number=telegram_number))
+    def add_user(self, telegram_id: str, username: str, telegram_number: Optional[str] = None, telegram_name: Optional[str] = None):
+        return self.__add(User(username=username, telegram_id=telegram_id, telegram_number=telegram_number, telegram_name=telegram_name))
 
     def _update(self, instance):
         """Helper method to update an instance in the session and commit."""

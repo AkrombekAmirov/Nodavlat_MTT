@@ -62,10 +62,10 @@ yonalish_nomi_keyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="4️⃣ Maktabgacha talim tashkiloti metodisti", callback_data="faculty3"),
         ],
         [
-            InlineKeyboardButton(text="5️⃣ Maktabgacha talim tashkiloti musiqa rahbari", callback_data="faculty4"),
+            InlineKeyboardButton(text="5️⃣ Maktabgacha ta`lim tashkiloti tashkilot oshpazi", callback_data="faculty4"),
         ],
         [
-            InlineKeyboardButton(text="6️⃣ Maktabgacha ta`lim tashkiloti tashkilot oshpazi",
+            InlineKeyboardButton(text="6️⃣ Maktabgacha talim tashkiloti musiqa rahbari",
                                  callback_data="faculty5"),
         ],
         [

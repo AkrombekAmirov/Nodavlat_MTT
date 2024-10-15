@@ -34,12 +34,72 @@ list_ = ["Maktabgacha ta’lim tashkiloti tarbiyachisi", "Maktabgacha ta’lim t
 
 @dp.message_handler(content_types=types.ContentType.CONTACT)
 async def test(message: types.Message, state: FSMContext):
-    db.add_user(telegram_id=str(message.from_user.id), name=message.from_user.full_name,
-                username=message.from_user.username,
-                telegram_number=message.contact.phone_number)
+    print(message.from_user.username)
+    db.add_user(telegram_id=str(message.from_user.id),
+                username=str(message.from_user.username) if message.from_user.username else "",
+                telegram_name=str(message.from_user.full_name),
+                telegram_number=str(message.contact.phone_number))
     await message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
 
 
 @dp.callback_query_handler(text="registration")
 async def registration(call: types.CallbackQuery):
-    await call.message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
+    await call.message.answer("Malaka oshirish kurslari yo'nalishini tanlang.", reply_markup=yonalish_nomi_keyboard)
+
+
+@dp.callback_query_handler(
+    lambda call: call.data in ["faculty0", "faculty1", "faculty2", "faculty3", "faculty4", "faculty5", "faculty6",
+                               "faculty7", "faculty8", "faculty9", "faculty10", "faculty11"])
+async def faculty(call: types.CallbackQuery):
+    await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
+
+
+@dp.callback_query_handler(lambda call: call.data in list_regioin)
+async def region(call: types.CallbackQuery, state: FSMContext):
+    await state.update_data({"region": list_region1[int(call.data[3:])]})
+    await call.message.answer("Tumanlarni tanlang.", reply_markup=await inline_tumanlar(call.data))
+
+
+@dp.callback_query_handler(lambda call: call.data in list_tuman)
+async def region(call: types.CallbackQuery, state: FSMContext):
+    await state.update_data({"tuman": call.data})
+    await call.message.answer("Pasportingiz seria ma'lumotini kiriting!", reply_markup=seria_keyboard)
+
+
+@dp.callback_query_handler(lambda call: call.data in ["AA", "AB", "AC", "AD", "AE", "KA"])
+async def answer_seria(call: types.CallbackQuery, state: FSMContext):
+    logging.info(f"{call.from_user.id} {call.message.from_user.full_name} {call.data}")
+    await state.update_data({"passport_seria": call.data})
+    await call.message.delete()
+    await call.message.answer(f"Passportingiz  raqamini kiriting: {call.data}", reply_markup=number_keyboard)
+    await Learning.next()
+
+
+@dp.callback_query_handler(lambda call: call.data in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "number_back"],
+                           state=Learning.two)
+async def answer_seria(call: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    logging.info(f"{call.from_user.id} {call.message.from_user.full_name} {call.data} {data.get('passport_number')}")
+    if str(call.data) == "number_back" and len(str(data.get("passport_number"))) != 0:
+        await state.update_data({"passport_number": f"{data.get('passport_number')[:-1]}"})
+    elif str(data.get("passport_number"))[0:4] == "None":
+        await state.update_data({"passport_number": call.data})
+    elif str(call.data) != "number_back":
+        await state.update_data({"passport_number": f"{data.get('passport_number')}{call.data}"})
+    data = await state.get_data()
+    if len(str(data.get("passport_number"))) == 7:
+        print(data.get("passport_seria"), data.get("passport_number"))
+        if get_user_info(passport=f"{data.get('passport_seria')}{data.get('passport_number')}"):
+            await call.message.answer(
+                "Bu passport seriyasi va raqami bilan avval ro'yxatdan o'tgan. Iltimos qaytadan urinib ko'ring!",
+                reply_markup=choose_visitor)
+            await state.reset_state(with_data=True)
+        else:
+            await state.update_data({"passport": data.get("passport_seria") + data.get("passport_number")})
+            await call.message.delete()
+            await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
+            await Learning.four.set()
+    else:
+        await call.message.edit_text(
+            f"Passport raqamini kiriting: {data.get('passport_seria')} {data.get('passport_number')}",
+            reply_markup=number_keyboard)

@@ -4,18 +4,18 @@ from datetime import datetime
 
 class User(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
-    name: str
     username: str
     telegram_id: str
     telegram_name: str
     telegram_number: str
-    passport: str = Field(default='')
-    contract_number: str = Field(default='')
-    telegram_file_id: str = Field(default='')
-    telegram_ariza_id: str = Field(default='')
-    ariza_id: str = Field(default='')
-    file_id: str = Field(default='')
-    faculty: str = Field(default='')
+    name: str = Field(default="")
+    passport: str = Field(default="")
+    contract_number: str = Field(default="")
+    telegram_file_id: str = Field(default="")
+    telegram_ariza_id: str = Field(default="")
+    ariza_id: str = Field(default="")
+    file_id: str = Field(default="")
+    faculty: str = Field(default="")
     group: str = Field(default='001')
     created_date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
     created_time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
