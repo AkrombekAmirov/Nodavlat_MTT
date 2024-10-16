@@ -41,7 +41,7 @@ choose_visitor = InlineKeyboardMarkup(inline_keyboard=[
         InlineKeyboardButton(text="📄 Malaka oshirish instituti haqida malumot olish", callback_data="information"),
     ],
     [
-        InlineKeyboardButton(text="📝 Ariza qoldirish", callback_data="registration"),
+        InlineKeyboardButton(text="📝 Ro'yhatdan o'tish", callback_data="registration"),
     ]
 ])
 

@@ -22,14 +22,26 @@ db = DatabaseService(engine=engine)
 logging.basicConfig(filename='bot.log', filemode='w', level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-list_ = ["Maktabgacha ta’lim tashkiloti tarbiyachisi", "Maktabgacha ta’lim tashkiloti tarbiyachisi",
-         "Defektologiya (logopediya)", "Amaliy psixologiya"]
+list_ = [
+    'Maktabgacha talim tashkiloti tarbiyachisi',
+    'Maktabgacha talim tashkiloti psixologi',
+    'Maktabgacha talim tashkiloti direktori',
+    'Maktabgacha talim tashkiloti metodisti',
+    'Maktabgacha talim tashkiloti defektolog/logopedi',
+    'Maktabgacha talim tashkiloti musiqa rahbari',
+    'Maktabgacha ta`lim tashkiloti tashkilot oshpazi',
+    'Maktabgacha ta’lim tashkiloti tarbiyachi yordamchisi',
+    'Maktabgacha talim tashkiloti tarbiyachisi 576 soat',
+    'Maktabgacha talim tashkiloti amaliy psixologi 576 soat',
+    'Maktabgacha talim tashkiloti defektolog/logopedi 576 soat',
+    'Maktabgacha talim tashkiloti tarbiyachisi 864 soat'
+]
 
 
-# @dp.message_handler(commands=['start'])
-# async def exit_system(message: types.Message, state: FSMContext):
-#     await state.reset_state(with_data=True)  # Holatni tozalash
-#     await message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
+@dp.message_handler(commands=['start'])
+async def exit_system(message: types.Message, state: FSMContext):
+    await state.reset_state(with_data=True)  # Holatni tozalash
+    await message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
 
 
 @dp.message_handler(content_types=types.ContentType.CONTACT)
@@ -50,7 +62,8 @@ async def registration(call: types.CallbackQuery):
 @dp.callback_query_handler(
     lambda call: call.data in ["faculty0", "faculty1", "faculty2", "faculty3", "faculty4", "faculty5", "faculty6",
                                "faculty7", "faculty8", "faculty9", "faculty10", "faculty11"])
-async def faculty(call: types.CallbackQuery):
+async def faculty(call: types.CallbackQuery, state: FSMContext):
+    await state.update_data({"yonalish": call.data})
     await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
 
 
@@ -63,10 +76,27 @@ async def region(call: types.CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(lambda call: call.data in list_tuman)
 async def region(call: types.CallbackQuery, state: FSMContext):
     await state.update_data({"tuman": call.data})
-    await call.message.answer("Pasportingiz seria ma'lumotini kiriting!", reply_markup=seria_keyboard)
+    await call.message.answer("Familiya, Ism va Sharifingizni kiriting.")
+    await Learning.zero.set()
 
 
-@dp.callback_query_handler(lambda call: call.data in ["AA", "AB", "AC", "AD", "AE", "KA"])
+@dp.message_handler(content_types=types.ContentTypes.TEXT, state=Learning.zero)
+async def answer_name(message: types.Message, state: FSMContext):
+    logging.info(f"{message.from_user.id} {message.from_user.full_name} {message.text}")
+    await message.delete()
+    if message.text.startswith("/start"):
+        await exit_system(message, state)
+    elif re.match(r"^[A-Za-z\s']+$", message.text):
+        await state.update_data({"Name": message.text})
+        await message.answer("Pasportingiz seria va raqamini kiriting!", reply_markup=seria_keyboard)
+        await Learning.next()
+    else:
+        await message.answer(
+            "Siz malumot kiritishda xatolikga yo'l quydingiz! Iltimos Familiya, Ism va Sharifingizni  lotin alifbosida kiriting.")
+        await Learning.zero.set()
+
+
+@dp.callback_query_handler(lambda call: call.data in ["AA", "AB", "AC", "AD", "AE", "KA"], state=Learning.one)
 async def answer_seria(call: types.CallbackQuery, state: FSMContext):
     logging.info(f"{call.from_user.id} {call.message.from_user.full_name} {call.data}")
     await state.update_data({"passport_seria": call.data})
@@ -97,9 +127,34 @@ async def answer_seria(call: types.CallbackQuery, state: FSMContext):
         else:
             await state.update_data({"passport": data.get("passport_seria") + data.get("passport_number")})
             await call.message.delete()
-            await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
-            await Learning.four.set()
+            print(data.get('yonalish'), data.get('yonalish')[7])
+            # faculty_name = "864 soatlik" if data.get('yonalish') == "faculty0" else "576 soatlik"
+            data = await state.get_data()
+            data1 = (
+                f"Quyidagi kiritgan ma'lumotlaringiz to'g'ri ekanligini tasdiqlaysizmi?\nF. I. SH: {data.get('Name')}\nPassport: <b>{data.get('passport')}</b>\nViloyat: {data.get('region')}\nTuman: "
+                f"{data.get('tuman')}\nYonalish: <b>{list_[int(data.get('yonalish')[7])]}</b> ✅")
+            await call.message.answer(text=data1, reply_markup=response_keyboard)
+            await Learning.three.set()
     else:
         await call.message.edit_text(
             f"Passport raqamini kiriting: {data.get('passport_seria')} {data.get('passport_number')}",
             reply_markup=number_keyboard)
+
+
+@dp.callback_query_handler(lambda call: call.data in ["yes", "no"], state=Learning.three)
+async def check(call: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    if call.data == "yes":
+        await call.message.answer("✅ Ma'lumotlaringiz muvaffaqiyatli qabul qilindi.\nTanlagan yunalishda o'qishningiz uchun ariza qolding!", reply_markup=choose_contract_)
+        db.update_user(telegram_id=str(call.from_user.id), name=data.get("Name"), passport=data.get("passport"), faculty=list_[int(data.get('yonalish')[7])])
+        await Learning.next()
+    elif call.data == "no":
+        await call.message.answer("❌ Ma'lumotlaringiz muvaffaqiyatli qabul qilinmadi. Iltimos qaytadan urinib ko'ring!", reply_markup=choose_visitor)
+    await state.reset_state(with_data=True)
+
+
+@dp.callback_query_handler(lambda call: call.data in ["qabul_yes"], state=Learning.four)
+async def check_choose(call: types.CallbackQuery, state: FSMContext):
+    if call.data == "qabul_yes":
+        await call.message.answer("✅ Yuborgan arizangiz ko'rib chiqilmoqda.", reply_markup=choose_contract_)
+

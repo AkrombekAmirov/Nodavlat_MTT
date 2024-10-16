@@ -17,8 +17,10 @@ class DatabaseService:
             print(f"Added: {instance}")
         return instance.id
 
-    def add_user(self, telegram_id: str, username: str, telegram_number: Optional[str] = None, telegram_name: Optional[str] = None):
-        return self.__add(User(username=username, telegram_id=telegram_id, telegram_number=telegram_number, telegram_name=telegram_name))
+    def add_user(self, telegram_id: str, username: str, telegram_number: Optional[str] = None,
+                 telegram_name: Optional[str] = None):
+        return self.__add(User(username=username, telegram_id=telegram_id, telegram_number=telegram_number,
+                               telegram_name=telegram_name))
 
     def _update(self, instance):
         """Helper method to update an instance in the session and commit."""
@@ -28,6 +30,28 @@ class DatabaseService:
             session.refresh(instance)
             print(f"Updated: {instance}")
         return instance.id
+
+    def update_user(self, telegram_id: str, name: str, passport: str, faculty: str):
+        """Foydalanuvchi ma'lumotlarini yangilash funksiyasi."""
+        with Session(self.engine) as session:
+            # Foydalanuvchini telegram_id orqali qidiramiz
+            user = session.exec(select(User).where(User.telegram_id == telegram_id)).one_or_none()
+
+            if not user:
+                print(f"User with telegram_id {telegram_id} not found.")
+                return None
+
+            # Foydalanuvchining ma'lumotlarini dinamik tarzda yangilaymiz
+            updated_fields = {"name": name, "passport": passport, "faculty": faculty}
+            for field, value in updated_fields.items():
+                if value:  # Faqat bo'sh bo'lmagan qiymatlarni yangilash
+                    setattr(user, field, value)
+
+            # O'zgarishlarni saqlash
+            session.commit()
+            session.refresh(user)
+            print(f"Updated user: {user}")
+            return user.id
 
     def get_user_by_telegram_id(self, telegram_id: str) -> Optional[User]:
         """Foydalanuvchini telegram_id orqali olish funksiyasi."""
