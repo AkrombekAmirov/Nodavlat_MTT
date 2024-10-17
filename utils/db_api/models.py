@@ -9,6 +9,8 @@ class User(SQLModel, table=True):
     telegram_name: str
     telegram_number: str
     name: str = Field(default="")
+    tuman: str = Field(default="")
+    viloyat: str = Field(default="")
     passport: str = Field(default="")
     contract_number: str = Field(default="")
     telegram_file_id: str = Field(default="")
@@ -17,6 +19,7 @@ class User(SQLModel, table=True):
     file_id: str = Field(default="")
     faculty: str = Field(default="")
     group: str = Field(default='001')
+    status: str = Field(default="")
     created_date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
     created_time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
 

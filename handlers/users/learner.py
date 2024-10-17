@@ -1,6 +1,8 @@
 from keyboards.inline import keyboard, yonalish_nomi_keyboard, response_keyboard, uzbekistan_viloyatlar, choose_visitor, \
-    choose_contract_, seria_keyboard, number_keyboard, list_regioin, list_tuman, list_region1
+    choose_contract_, seria_keyboard, number_keyboard, list_regioin, list_tuman, list_region1, response_admin, \
+    keyboard_func
 from file_service.file_read import process_document, process_contract, func_qrcode, write_qabul
+from keyboards.inline.Dictionary import faculty_file_map, faculty_file_map2
 from file_service.file_database.file_path import get_file_database_path
 from data.config import ADMINS, ADMIN_M1, ADMIN_M2
 from file_service.file_path import get_file_path
@@ -21,21 +23,6 @@ db = DatabaseService(engine=engine)
 
 logging.basicConfig(filename='bot.log', filemode='w', level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-list_ = [
-    'Maktabgacha talim tashkiloti tarbiyachisi',
-    'Maktabgacha talim tashkiloti psixologi',
-    'Maktabgacha talim tashkiloti direktori',
-    'Maktabgacha talim tashkiloti metodisti',
-    'Maktabgacha talim tashkiloti defektolog/logopedi',
-    'Maktabgacha talim tashkiloti musiqa rahbari',
-    'Maktabgacha ta`lim tashkiloti tashkilot oshpazi',
-    'Maktabgacha ta’lim tashkiloti tarbiyachi yordamchisi',
-    'Maktabgacha talim tashkiloti tarbiyachisi 576 soat',
-    'Maktabgacha talim tashkiloti amaliy psixologi 576 soat',
-    'Maktabgacha talim tashkiloti defektolog/logopedi 576 soat',
-    'Maktabgacha talim tashkiloti tarbiyachisi 864 soat'
-]
 
 
 @dp.message_handler(commands=['start'])
@@ -132,7 +119,7 @@ async def answer_seria(call: types.CallbackQuery, state: FSMContext):
             data = await state.get_data()
             data1 = (
                 f"Quyidagi kiritgan ma'lumotlaringiz to'g'ri ekanligini tasdiqlaysizmi?\nF. I. SH: {data.get('Name')}\nPassport: <b>{data.get('passport')}</b>\nViloyat: {data.get('region')}\nTuman: "
-                f"{data.get('tuman')}\nYonalish: <b>{list_[int(data.get('yonalish')[7])]}</b> ✅")
+                f"{data.get('tuman')}\nYonalish: <b>{faculty_file_map2.get(data.get('yonalish'))}</b> ✅")
             await call.message.answer(text=data1, reply_markup=response_keyboard)
             await Learning.three.set()
     else:
@@ -145,16 +132,30 @@ async def answer_seria(call: types.CallbackQuery, state: FSMContext):
 async def check(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     if call.data == "yes":
-        await call.message.answer("✅ Ma'lumotlaringiz muvaffaqiyatli qabul qilindi.\nTanlagan yunalishda o'qishningiz uchun ariza qolding!", reply_markup=choose_contract_)
-        db.update_user(telegram_id=str(call.from_user.id), name=data.get("Name"), passport=data.get("passport"), faculty=list_[int(data.get('yonalish')[7])])
+        await call.message.answer(
+            "✅ Ma'lumotlaringiz muvaffaqiyatli qabul qilindi.\nTanlagan yunalishda o'qishingiz uchun ariza qolding!",
+            reply_markup=choose_contract_)
+        db.update_user(telegram_id=str(call.from_user.id), name=data.get("Name"), passport=data.get("passport"),
+                       faculty=faculty_file_map2.get(data.get('yonalish')), viloyat=data.get("region"), tuman=data.get("tuman"),)
+        await state.update_data({"ariza_uuid": uuid4()})
         await Learning.next()
     elif call.data == "no":
-        await call.message.answer("❌ Ma'lumotlaringiz muvaffaqiyatli qabul qilinmadi. Iltimos qaytadan urinib ko'ring!", reply_markup=choose_visitor)
-    await state.reset_state(with_data=True)
+        await call.message.answer("❌ Ma'lumotlaringiz muvaffaqiyatli qabul qilinmadi. Iltimos qaytadan urinib ko'ring!",
+                                  reply_markup=choose_visitor)
+        await state.reset_state(with_data=True)
 
 
-@dp.callback_query_handler(lambda call: call.data in ["qabul_yes"], state=Learning.four)
+@dp.callback_query_handler(text="qabul_yes", state=Learning.four)
 async def check_choose(call: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    print(call.data)
+    print(await get_file_path(name=faculty_file_map.get(data.get('yonalish'))))
     if call.data == "qabul_yes":
         await call.message.answer("✅ Yuborgan arizangiz ko'rib chiqilmoqda.", reply_markup=choose_contract_)
-
+        await func_qrcode(url=data.get("ariza_uuid"), name=data.get("Name"), status=False)
+        await process_document(address=f"{data.get('region')} {data.get('tuman')}da", name=data.get("Name"),
+                               file_name=await get_file_database_path(name=faculty_file_map.get(data.get('yonalish'))))
+        await dp.bot.send_message(ADMINS,
+                                  f"Arizachi:{data.get('Name')}\nPassport:{data.get('passport')}\nViloyat:{data.get('region')}\nTuman:{data.get('tuman')}\nYo'nalish:{faculty_file_map2.get(data.get('yonalish'))}",
+                                  reply_markup=await keyboard_func(user_id=call.from_user.id, message=call.message, faculty=data.get('yonalish')))
+        await state.reset_state(with_data=True)

@@ -13,3 +13,6 @@ class Learning(StatesGroup):
     eight = State()
     nine = State()
     ten = State()
+
+class Form(StatesGroup):
+    reason = State()
