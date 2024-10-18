@@ -33,35 +33,59 @@ async def exit_system(message: types.Message, state: FSMContext):
 
 @dp.message_handler(content_types=types.ContentType.CONTACT)
 async def test(message: types.Message, state: FSMContext):
-    print(message.from_user.username)
-    db.add_user(telegram_id=str(message.from_user.id),
-                username=str(message.from_user.username) if message.from_user.username else "",
-                telegram_name=str(message.from_user.full_name),
-                telegram_number=str(message.contact.phone_number))
-    await message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
+    user_id = str(message.from_user.id)
+    if db.get_user_exists(user_id):
+        await message.answer("Quyidagi no'mer bilan avval ro'yhatdan o'tilgan.\nQuyidagi xizmat turini tanlang!",
+                             reply_markup=choose_visitor)
+    elif message.contact.user_id == message.from_user.id:
+        db.add_user(
+            telegram_id=user_id,
+            username=message.from_user.username or "",
+            telegram_name=message.from_user.full_name,
+            telegram_number=message.contact.phone_number
+        )
+        await message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
+    else:
+        await message.answer(
+            "Siz yuborgan telegram kontaktangiz sizga tegishli emas!\nIltimos, o'zingizni telegram kontaktingizni yuboring")
 
 
 @dp.callback_query_handler(text="registration")
 async def registration(call: types.CallbackQuery):
-    await call.message.answer("Malaka oshirish kurslari yo'nalishini tanlang.", reply_markup=yonalish_nomi_keyboard)
+    if not db.get_user_exists(call.from_user.id):
+        await call.message.answer("Telegram kontaktangizni yuboring.", reply_markup=keyboard)
+    elif db.get_user_exists(telegram_id=call.from_user.id):
+        user_ = db.get_user_by_telegram_id(telegram_id=call.from_user.id)
+        if user_.telegram_number:
+            await call.message.delete()
+            await call.message.answer("Malaka oshirish kurslari yo'nalishini tanlang.",
+                                      reply_markup=yonalish_nomi_keyboard)
+        elif not user_.telegram_number:
+            await call.message.answer("Telegram kontaktangizni yuboring.", reply_markup=keyboard)
+    elif not db.get_user_by_telegram_id(telegram_id=call.from_user.id):
+        await call.message.answer("Telegram kontaktangizni yuboring.", reply_markup=keyboard)
+
 
 
 @dp.callback_query_handler(
     lambda call: call.data in ["faculty0", "faculty1", "faculty2", "faculty3", "faculty4", "faculty5", "faculty6",
                                "faculty7", "faculty8", "faculty9", "faculty10", "faculty11"])
 async def faculty(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
     await state.update_data({"yonalish": call.data})
     await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
 
 
 @dp.callback_query_handler(lambda call: call.data in list_regioin)
 async def region(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
     await state.update_data({"region": list_region1[int(call.data[3:])]})
     await call.message.answer("Tumanlarni tanlang.", reply_markup=await inline_tumanlar(call.data))
 
 
 @dp.callback_query_handler(lambda call: call.data in list_tuman)
 async def region(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
     await state.update_data({"tuman": call.data})
     await call.message.answer("Familiya, Ism va Sharifingizni kiriting.")
     await Learning.zero.set()
@@ -69,7 +93,8 @@ async def region(call: types.CallbackQuery, state: FSMContext):
 
 @dp.message_handler(content_types=types.ContentTypes.TEXT, state=Learning.zero)
 async def answer_name(message: types.Message, state: FSMContext):
-    logging.info(f"{message.from_user.id} {message.from_user.full_name} {message.text}")
+    await state.update_data({"Name": message.text})
+    logging.info(f"{message.from_user.id} {message.text}")
     await message.delete()
     if message.text.startswith("/start"):
         await exit_system(message, state)
@@ -96,7 +121,7 @@ async def answer_seria(call: types.CallbackQuery, state: FSMContext):
                            state=Learning.two)
 async def answer_seria(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    logging.info(f"{call.from_user.id} {call.message.from_user.full_name} {call.data} {data.get('passport_number')}")
+    logging.info(f"{call.from_user.id} {data.get('Name')} {call.data} {data.get('passport_number')}")
     if str(call.data) == "number_back" and len(str(data.get("passport_number"))) != 0:
         await state.update_data({"passport_number": f"{data.get('passport_number')[:-1]}"})
     elif str(data.get("passport_number"))[0:4] == "None":
@@ -119,7 +144,7 @@ async def answer_seria(call: types.CallbackQuery, state: FSMContext):
             data = await state.get_data()
             data1 = (
                 f"Quyidagi kiritgan ma'lumotlaringiz to'g'ri ekanligini tasdiqlaysizmi?\nF. I. SH: {data.get('Name')}\nPassport: <b>{data.get('passport')}</b>\nViloyat: {data.get('region')}\nTuman: "
-                f"{data.get('tuman')}\nYonalish: <b>{faculty_file_map2.get(data.get('yonalish'))}</b> ✅")
+                f"{data.get('tuman')}\nYo'nalish: <b>{faculty_file_map2.get(data.get('yonalish'))}</b> ✅")
             await call.message.answer(text=data1, reply_markup=response_keyboard)
             await Learning.three.set()
     else:
@@ -130,13 +155,15 @@ async def answer_seria(call: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(lambda call: call.data in ["yes", "no"], state=Learning.three)
 async def check(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
     data = await state.get_data()
     if call.data == "yes":
         await call.message.answer(
-            "✅ Ma'lumotlaringiz muvaffaqiyatli qabul qilindi.\nTanlagan yunalishda o'qishingiz uchun ariza qolding!",
+            "✅ Ma'lumotlaringiz muvaffaqiyatli qabul qilindi.\nTanlagan yo'nalishda o'qishingiz uchun ariza qolding!",
             reply_markup=choose_contract_)
         db.update_user(telegram_id=str(call.from_user.id), name=data.get("Name"), passport=data.get("passport"),
-                       faculty=faculty_file_map2.get(data.get('yonalish')), viloyat=data.get("region"), tuman=data.get("tuman"),)
+                       faculty=faculty_file_map2.get(data.get('yonalish')), viloyat=data.get("region"),
+                       tuman=data.get("tuman"), )
         await state.update_data({"ariza_uuid": uuid4()})
         await Learning.next()
     elif call.data == "no":
@@ -145,17 +172,24 @@ async def check(call: types.CallbackQuery, state: FSMContext):
         await state.reset_state(with_data=True)
 
 
-@dp.callback_query_handler(text="qabul_yes", state=Learning.four)
+@dp.callback_query_handler(lambda call: call.data in ["qabul_yes", "inkor_no"], state=Learning.four)
 async def check_choose(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
     data = await state.get_data()
-    print(call.data)
-    print(await get_file_path(name=faculty_file_map.get(data.get('yonalish'))))
     if call.data == "qabul_yes":
-        await call.message.answer("✅ Yuborgan arizangiz ko'rib chiqilmoqda.", reply_markup=choose_contract_)
         await func_qrcode(url=data.get("ariza_uuid"), name=data.get("Name"), status=False)
         await process_document(address=f"{data.get('region')} {data.get('tuman')}da", name=data.get("Name"),
                                file_name=await get_file_database_path(name=faculty_file_map.get(data.get('yonalish'))))
-        await dp.bot.send_message(ADMINS,
-                                  f"Arizachi:{data.get('Name')}\nPassport:{data.get('passport')}\nViloyat:{data.get('region')}\nTuman:{data.get('tuman')}\nYo'nalish:{faculty_file_map2.get(data.get('yonalish'))}",
-                                  reply_markup=await keyboard_func(user_id=call.from_user.id, message=call.message, faculty=data.get('yonalish')))
+        response = await call.message.answer_document(
+            types.InputFile(await get_file_path(name=f"file_ariza\\{data.get('Name')}.pdf")),
+            caption="Sizning arizangiz")
+        await call.message.answer("Yuborgan arizangiz ko'rib chiqilmoqda ✅")
+        await dp.bot.send_message("353572645",
+                                  f"Arizachi:{data.get('Name')}\nPassport:<b>{data.get('passport')}</b>\nViloyat:{data.get('region')}\nTuman:{data.get('tuman')}\nYo'nalish:<b>{faculty_file_map2.get(data.get('yonalish'))}</b>",
+                                  reply_markup=await keyboard_func(user_id=call.from_user.id, message=call.message,
+                                                                   faculty=data.get('yonalish')))
+        db.update_(telegram_id=str(call.from_user.id), updated_fields={"telegram_ariza_id": response.document.file_id})
         await state.reset_state(with_data=True)
+    elif call.data == "inkor_no":
+        await call.message.answer("❌ Ariza qabul qilinmadi. Iltimos qaytadan urinib ko'ring!")
+        await exit_system(call.message, state)

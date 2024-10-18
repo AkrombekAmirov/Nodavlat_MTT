@@ -7,6 +7,50 @@ list_region1 = ["Toshkent viloyati", "Toshkent shahri", "Samarqand viloyati", "N
                 "Xorazm viloyati", "Navoiy viloyati", "Buxoro viloyati", "Sirdaryo viloyati",
                 "Qoraqalpogʻiston Respublikasi"]
 
+faculty_file_map = {
+    "faculty0": "ariza_144.docx",
+    "faculty1": "ariza_144.docx",
+    "faculty2": "ariza_144.docx",
+    "faculty3": "ariza_144.docx",
+    "faculty4": "ariza_144.docx",
+    "faculty5": "ariza_144.docx",
+    "faculty6": "ariza_144.docx",
+    "faculty7": "ariza_144.docx",
+    "faculty8": "ariza_576.docx",
+    "faculty9": "ariza_576.docx",
+    "faculty10": "ariza_576.docx",
+    "faculty11": "ariza_864.docx"
+}
+faculty_file_map1 = {
+    "faculty0": "ariza_144.docx",
+    "faculty1": "shartnoma_144.docx",
+    "faculty2": "shartnoma_144.docx",
+    "faculty3": "shartnoma_144.docx",
+    "faculty4": "shartnoma_144.docx",
+    "faculty5": "shartnoma_144.docx",
+    "faculty6": "shartnoma_144.docx",
+    "faculty7": "shartnoma_144.docx",
+    "faculty8": "shartnoma_576.docx",
+    "faculty9": "shartnoma_576.docx",
+    "faculty10": "shartnoma_576.docx",
+    "faculty11": "shartnoma_864.docx",
+}
+
+faculty_file_map2 = {
+    "faculty0": 'Maktabgacha talim tashkiloti tarbiyachisi',
+    "faculty1": 'Maktabgacha talim tashkiloti psixologi',
+    "faculty2": 'Maktabgacha talim tashkiloti direktori',
+    "faculty3": 'Maktabgacha talim tashkiloti metodisti',
+    "faculty4": 'Maktabgacha talim tashkiloti musiqa rahbari',
+    "faculty5": 'Maktabgacha ta`lim tashkiloti tashkilot oshpazi',
+    "faculty6": 'Maktabgacha talim tashkiloti defektolog/logopedi',
+    "faculty7": 'Maktabgacha ta’lim tashkiloti tarbiyachi yordamchisi',
+    "faculty8": 'Maktabgacha talim tashkiloti tarbiyachisi 576 soat',
+    "faculty9": 'Maktabgacha talim tashkiloti amaliy psixologi 576 soat',
+    "faculty10": 'Maktabgacha talim tashkiloti defektolog/logopedi 576 soat',
+    "faculty11": 'Maktabgacha talim tashkiloti tarbiyachisi 864 soat'
+}
+
 Toshkent_viloyat = [
     "Bekobod tumani",
     "Boʻstonliq tumani",

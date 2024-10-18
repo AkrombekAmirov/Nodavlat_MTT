@@ -12,5 +12,5 @@ db = DatabaseService(engine=engine)
 async def bot_start(message: Message):
     if db.get_user_by_telegram_id(str(message.from_user.id)):
         await message.answer("Xizmat turini tanlang", reply_markup=choose_visitor)
-    else:
-        await message.answer("Telegram botiga xush kelibsiz.\nTelegram raqamingizni yuboring.", reply_markup=keyboard)
+    elif not db.get_user_by_telegram_id(str(message.from_user.id)):
+        await message.answer("Telegram botiga xush kelibsiz.\nTelegram kontaktangizni yuboring.", reply_markup=keyboard)

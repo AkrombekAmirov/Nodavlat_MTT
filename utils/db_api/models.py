@@ -19,7 +19,7 @@ class User(SQLModel, table=True):
     file_id: str = Field(default="")
     faculty: str = Field(default="")
     group: str = Field(default='001')
-    status: str = Field(default="")
+    status: str = Field(default="False")
     created_date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
     created_time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
 

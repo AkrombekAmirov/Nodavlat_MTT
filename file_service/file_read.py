@@ -68,7 +68,7 @@ async def process_contract(name, faculty, passport, number, address, contract_nu
         if "SONLI1" in paragraph.text:
             await replace_text(paragraph, "SONLI1", contract_number)
         if "DATE" in paragraph.text:
-            await replace_text(paragraph, "DATE", f"{datetime.now().strftime('%d.%m.')}", bold=False)
+            await replace_text(paragraph, "DATE", f"{datetime.now().strftime('%d.%m.%Y')}", bold=False)
         if "NAME" in paragraph.text:
             await replace_text(paragraph, "NAME", f"{name}")
         if "FACULTY" in paragraph.text:

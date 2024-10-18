@@ -38,7 +38,7 @@ rasmiylashtirish = InlineKeyboardMarkup(inline_keyboard=[
 
 choose_visitor = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton(text="📄 Malaka oshirish instituti haqida malumot olish", callback_data="information"),
+        InlineKeyboardButton(text="📄 Malaka oshirish kurslari haqida malumot olish", callback_data="information"),
     ],
     [
         InlineKeyboardButton(text="📝 Ro'yhatdan o'tish", callback_data="registration"),
@@ -48,43 +48,48 @@ choose_visitor = InlineKeyboardMarkup(inline_keyboard=[
 yonalish_nomi_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text='1️⃣ Maktabgacha talim tashkiloti tarbiyachisi',
+            InlineKeyboardButton(text='Maktabgacha talim tashkiloti tarbiyachisi',
                                  callback_data="faculty0"),
         ],
         [
-            InlineKeyboardButton(text="2️⃣ Maktabgacha talim tashkiloti psixologi",
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti psixologi",
                                  callback_data="faculty1"),
         ],
         [
-            InlineKeyboardButton(text="3️⃣ Maktabgacha talim tashkiloti direktori", callback_data="faculty2"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti direktori", callback_data="faculty2"),
         ],
         [
-            InlineKeyboardButton(text="4️⃣ Maktabgacha talim tashkiloti metodisti", callback_data="faculty3"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti metodisti", callback_data="faculty3"),
         ],
         [
-            InlineKeyboardButton(text="5️⃣ Maktabgacha talim tashkiloti musiqa rahbari", callback_data="faculty4"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti musiqa rahbari", callback_data="faculty4"),
         ],
         [
-            InlineKeyboardButton(text="6️⃣ Maktabgacha ta`lim tashkiloti tashkilot oshpazi",
+            InlineKeyboardButton(text="Maktabgacha ta`lim tashkiloti tashkilot oshpazi",
                                  callback_data="faculty5"),
         ],
         [
-            InlineKeyboardButton(text="7️⃣ Maktabgacha talim tashkiloti defektolog/logopedi", callback_data="faculty6"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti defektolog/logopedi", callback_data="faculty6"),
         ],
         [
-            InlineKeyboardButton(text="8️⃣ Maktabgacha talim tashkiloti tarbiyachisi 576 soat", callback_data="faculty7"),
+            InlineKeyboardButton(text="Maktabgacha ta’lim tashkiloti tarbiyachi yordamchisi",
+                                 callback_data="faculty7"),
         ],
         [
-            InlineKeyboardButton(text="9️⃣ Maktabgacha ta’lim tashkiloti tarbiyachi yordamchisi", callback_data="faculty8"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti tarbiyachisi 576 soat",
+                                 callback_data="faculty8"),
         ],
         [
-            InlineKeyboardButton(text="1️⃣0️⃣ Maktabgacha talim tashkiloti amaliy psixologi 576 soat", callback_data="faculty9"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti amaliy psixologi 576 soat",
+                                 callback_data="faculty9"),
         ],
         [
-            InlineKeyboardButton(text="1️⃣1️⃣ Maktabgacha talim tashkiloti defektolog/logopedi 576 soat", callback_data="faculty10"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti defektolog/logopedi 576 soat",
+                                 callback_data="faculty10"),
         ],
         [
-            InlineKeyboardButton(text="1️⃣2️⃣ Maktabgacha talim tashkiloti tarbiyachisi 864 soat", callback_data="faculty11"),
+            InlineKeyboardButton(text="Maktabgacha talim tashkiloti tarbiyachisi 864 soat",
+                                 callback_data="faculty11"),
         ]
     ])
 
@@ -94,9 +99,6 @@ response_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     ],
     [
         InlineKeyboardButton(text="❌ YO'Q", callback_data="no"),
-    ],
-    [
-        InlineKeyboardButton(text="🔙 Orqaga", callback_data="back_to_menu"),
     ]
 ])
 
@@ -126,6 +128,21 @@ choose_language = InlineKeyboardMarkup(inline_keyboard=[
         InlineKeyboardButton(text="🇷🇺 Rus tili", callback_data="Rus tili"),
     ]
 ])
+async def keyboard_func(user_id, message, faculty):
+    choose_admin = InlineKeyboardMarkup(row_width=2)
+    approve_btn = InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}_{message.message_id}_{faculty}")
+    reject_btn = InlineKeyboardButton("❌ Rad etish", callback_data=f"reject_{user_id}_{message.message_id}_{faculty}")
+    choose_admin.add(approve_btn, reject_btn)
+    return choose_admin
+response_admin = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(text="✅ XA", callback_data="yes_admin"),
+    ],
+    [
+        InlineKeyboardButton(text="❌ YO'Q", callback_data="no_admin"),
+    ]
+])
+
 
 keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 button = KeyboardButton(text="📞 Telefon raqamingizni yuboring", request_contact=True)
