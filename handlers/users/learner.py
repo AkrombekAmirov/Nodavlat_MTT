@@ -184,7 +184,7 @@ async def check_choose(call: types.CallbackQuery, state: FSMContext):
             types.InputFile(await get_file_path(name=f"file_ariza\\{data.get('Name')}.pdf")),
             caption="Sizning arizangiz")
         await call.message.answer("Yuborgan arizangiz ko'rib chiqilmoqda ✅")
-        await dp.bot.send_message("353572645",
+        await dp.bot.send_message(ADMIN_M1,
                                   f"Arizachi:{data.get('Name')}\nPassport:<b>{data.get('passport')}</b>\nViloyat:{data.get('region')}\nTuman:{data.get('tuman')}\nYo'nalish:<b>{faculty_file_map2.get(data.get('yonalish'))}</b>",
                                   reply_markup=await keyboard_func(user_id=call.from_user.id, message=call.message,
                                                                    faculty=data.get('yonalish')))
