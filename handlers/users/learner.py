@@ -6,18 +6,18 @@ from keyboards.inline.Dictionary import faculty_file_map, faculty_file_map2
 from file_service.file_database.file_path import get_file_database_path
 from data.config import ADMINS, ADMIN_M1, ADMIN_M2
 from file_service.file_path import get_file_path
+from utils.db_api.core import DatabaseService
 from keyboards.inline import inline_tumanlar
 from aiogram.dispatcher import FSMContext
 from utils.db_api.postgresql1 import *
 from states.button import Learning
+from data.config import engine
 from datetime import datetime
 from aiogram import types
 from uuid import uuid4
 from loader import dp
 import logging
 import re
-from utils.db_api.core import DatabaseService
-from data.config import engine
 
 db = DatabaseService(engine=engine)
 
