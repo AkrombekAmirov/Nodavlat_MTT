@@ -66,12 +66,13 @@ async def registration(call: types.CallbackQuery):
         await call.message.answer("Telegram kontaktangizni yuboring.", reply_markup=keyboard)
 
 
-
 @dp.callback_query_handler(
     lambda call: call.data in ["faculty0", "faculty1", "faculty2", "faculty3", "faculty4", "faculty5", "faculty6",
                                "faculty7", "faculty8", "faculty9", "faculty10", "faculty11"])
 async def faculty(call: types.CallbackQuery, state: FSMContext):
     await call.message.delete()
+    print(db.get_faculty_number(str(faculty_file_map2.get(call.data))))
+    print(faculty_file_map2.get(call.data))
     await state.update_data({"yonalish": call.data})
     await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
 
