@@ -1,4 +1,4 @@
-from .models import User, FileChunk, FileRepository, UserGroup
+from .models import User, UserGroup
 from sqlmodel import SQLModel, create_engine, Session, select
 from typing import Optional, List
 from datetime import datetime
@@ -84,8 +84,17 @@ class DatabaseService:
         try:
             with Session(self.engine) as session:
                 next_contract_number = f"{int(session.query(User).order_by(User.contract_number.desc()).first().contract_number) + 1:03d}"  # 3 xonalik raqamga o'tkazish
-                print(next_contract_number, "sadassadsadasdsdasad")
                 return str(next_contract_number)
+        except Exception as e:
+            return e
+        finally:
+            session.close()
+
+    def get_faculty_number(self, faculty: str):
+        try:
+            with Session(self.engine) as session:
+                statement1 = session.exec(select(User).where(User.faculty == str(faculty))).all()
+                return statement1
         except Exception as e:
             return e
         finally:

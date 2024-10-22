@@ -6,18 +6,18 @@ from keyboards.inline.Dictionary import faculty_file_map, faculty_file_map2
 from file_service.file_database.file_path import get_file_database_path
 from data.config import ADMINS, ADMIN_M1, ADMIN_M2
 from file_service.file_path import get_file_path
+from utils.db_api.core import DatabaseService
 from keyboards.inline import inline_tumanlar
 from aiogram.dispatcher import FSMContext
 from utils.db_api.postgresql1 import *
 from states.button import Learning
+from data.config import engine
 from datetime import datetime
 from aiogram import types
 from uuid import uuid4
 from loader import dp
 import logging
 import re
-from utils.db_api.core import DatabaseService
-from data.config import engine
 
 db = DatabaseService(engine=engine)
 
@@ -66,12 +66,13 @@ async def registration(call: types.CallbackQuery):
         await call.message.answer("Telegram kontaktangizni yuboring.", reply_markup=keyboard)
 
 
-
 @dp.callback_query_handler(
     lambda call: call.data in ["faculty0", "faculty1", "faculty2", "faculty3", "faculty4", "faculty5", "faculty6",
                                "faculty7", "faculty8", "faculty9", "faculty10", "faculty11"])
 async def faculty(call: types.CallbackQuery, state: FSMContext):
     await call.message.delete()
+    print(db.get_faculty_number(str(faculty_file_map2.get(call.data))))
+    print(faculty_file_map2.get(call.data))
     await state.update_data({"yonalish": call.data})
     await call.message.answer("Viloyatingizni tanglang.", reply_markup=uzbekistan_viloyatlar)
 
