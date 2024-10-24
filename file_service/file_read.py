@@ -5,9 +5,10 @@ from docx.shared import Inches, Pt
 from openpyxl import load_workbook
 from os.path import join, dirname
 from datetime import datetime
-from docx2pdf import convert
+# from docx2pdf import convert
 from docx import Document
 from os import remove
+import subprocess
 
 
 async def replace_text(paragraph, old_text, new_text, font_size=None, bold=True, underline=False):
@@ -58,7 +59,7 @@ async def process_document(address, name, file_name):
             await replace_text(paragraph, "DATEFULL", f"{datetime.now().strftime('%d.%m.%Y')}    {name}")
         if "&" in paragraph.text:
             await add_qrcode_pcture(paragraph, "&", new_text=f"{name}", size=1.6)
-    doc.save(join(dirname(__file__), f"file_ariza\\{name}.docx"))
+    doc.save(join(dirname(__file__), f"file_ariza/{name}.docx"))
     await convert_pdf(name=name, status=True)
 
 
@@ -85,7 +86,7 @@ async def process_contract(name, faculty, passport, number, address, contract_nu
         await replace_table_text(table=table, old_text="TELNUMBER", new_text=number, font_size=12)
         await replace_table_text(table=table, old_text="ADDRES", new_text=address, font_size=12)
         await replace_table_text(table=table, old_text="&", new_text=name, bold=False)
-    doc.save(join(dirname(__file__), f"file_shartnoma\\{name}.docx"))
+    doc.save(join(dirname(__file__), f"file_shartnoma/{name}.docx"))
     await convert_pdf(name)
 
 
@@ -107,15 +108,16 @@ async def func_qrcode(url, name, status: bool = False):
 
 async def convert_pdf(name, status: bool = False):
     directory = "file_ariza" if status else "file_shartnoma"
-    source_path = join(dirname(__file__), f"{directory}\\{name}.docx")
-    target_path = join(dirname(__file__), f"{directory}\\{name}.pdf")
-    convert(source_path, target_path)
+    source_path = join(dirname(__file__), f"{directory}/{name}.docx")
+    target_path = join(dirname(__file__), f"{directory}")
+    # convert(source_path, target_path)
+    subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', source_path, '--outdir', target_path])
     remove(source_path) if exists(source_path) else None
 
 
 async def write_qabul(data):
     try:
-        path = await get_file_path("file_database\\qabul.xlsx")
+        path = await get_file_path("file_database/qabul.xlsx")
         workbook = load_workbook(path)
         sheet = workbook.active
         for row in data:

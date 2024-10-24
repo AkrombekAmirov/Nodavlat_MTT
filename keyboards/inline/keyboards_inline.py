@@ -76,19 +76,19 @@ yonalish_nomi_keyboard = InlineKeyboardMarkup(
                                  callback_data="faculty7"),
         ],
         [
-            InlineKeyboardButton(text="Maktabgacha talim tashkiloti tarbiyachisi 576 soat",
+            InlineKeyboardButton(text="MTT tarbiyachisi 576 soat qayta tayyorlov",
                                  callback_data="faculty8"),
         ],
         [
-            InlineKeyboardButton(text="Maktabgacha talim tashkiloti amaliy psixologi 576 soat",
+            InlineKeyboardButton(text="MTT amaliy psixologi 576 soat qayta tayyorlov",
                                  callback_data="faculty9"),
         ],
         [
-            InlineKeyboardButton(text="Maktabgacha talim tashkiloti defektolog/logopedi 576 soat",
+            InlineKeyboardButton(text="MTT defektolog/logopedi 576 soat qayta tayyorlov",
                                  callback_data="faculty10"),
         ],
         [
-            InlineKeyboardButton(text="Maktabgacha talim tashkiloti tarbiyachisi 864 soat",
+            InlineKeyboardButton(text="MTT tarbiyachisi 864 soat qayta tayyorlov",
                                  callback_data="faculty11"),
         ]
     ])
@@ -128,12 +128,17 @@ choose_language = InlineKeyboardMarkup(inline_keyboard=[
         InlineKeyboardButton(text="🇷🇺 Rus tili", callback_data="Rus tili"),
     ]
 ])
+
+
 async def keyboard_func(user_id, message, faculty):
     choose_admin = InlineKeyboardMarkup(row_width=2)
-    approve_btn = InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}_{message.message_id}_{faculty}")
+    approve_btn = InlineKeyboardButton("✅ Tasdiqlash",
+                                       callback_data=f"approve_{user_id}_{message.message_id}_{faculty}")
     reject_btn = InlineKeyboardButton("❌ Rad etish", callback_data=f"reject_{user_id}_{message.message_id}_{faculty}")
     choose_admin.add(approve_btn, reject_btn)
     return choose_admin
+
+
 response_admin = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(text="✅ XA", callback_data="yes_admin"),
@@ -143,6 +148,14 @@ response_admin = InlineKeyboardMarkup(inline_keyboard=[
     ]
 ])
 
+choose_admin = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(text="📝 GURUHGA BIRIKTIRISH", callback_data="qabul_yes_admin"),
+    ],
+    [
+        InlineKeyboardButton(text="❌ O'CHIRISH", callback_data="delete_no_admin"),
+    ]
+])
 
 keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 button = KeyboardButton(text="📞 Telefon raqamingizni yuboring", request_contact=True)

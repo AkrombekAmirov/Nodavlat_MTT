@@ -21,8 +21,8 @@ class User(SQLModel, table=True):
     faculty: str = Field(default="")
     group: str = Field(default='001')
     status: str = Field(default="False")
-    created_date: str
-    created_time: str
+    created_date: str = Field(default_factory=lambda: datetime.now(timezone('Asia/Tashkent')).strftime("%Y-%m-%d"))
+    created_time: str = Field(default_factory=lambda: datetime.now(timezone('Asia/Tashkent')).strftime("%H:%M:%S"))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -44,8 +44,8 @@ class FileRepository(SQLModel, table=True):
     contract_number: str
     content_type: str
     file_id: str
-    date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
-    time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
+    date: str = Field(default_factory=lambda: datetime.now(timezone('Asia/Tashkent')).strftime("%Y-%m-%d"))
+    time: str = Field(default_factory=lambda: datetime.now(timezone('Asia/Tashkent')).strftime("%H:%M:%S"))
 
 
 class UserGroup(SQLModel, table=True):
@@ -53,5 +53,5 @@ class UserGroup(SQLModel, table=True):
     faculty_name: str
     group_name: str
     group_id: str
-    date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
-    time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
+    date: str = Field(default_factory=lambda: datetime.now(timezone('Asia/Tashkent')).strftime("%Y-%m-%d"))
+    time: str = Field(default_factory=lambda: datetime.now(timezone('Asia/Tashkent')).strftime("%H:%M:%S"))
