@@ -58,6 +58,7 @@ async def get_rejection_reason(message: types.Message, state: FSMContext):
 async def create_file(telegram_id, faculty):
     user_ = db.get_user_by_telegram_id(telegram_id=telegram_id)
     contract_number = db.get_max_contract_number()
+
     _uuid = str(uuid4())
     _ariza_uuid = str(uuid4())
     await write_qabul([[user_.name, f"{user_.faculty}", user_.passport, contract_number,
@@ -68,14 +69,14 @@ async def create_file(telegram_id, faculty):
                            address=f"{user_.viloyat}, {user_.tuman}", contract_number=contract_number,
                            file_name=await get_file_database_path(name=faculty_file_map1.get(faculty)))
     response = await dp.bot.send_document(telegram_id, types.InputFile(
-        await get_file_path(name=f"file_shartnoma\\{user_.name}.pdf")))
+        await get_file_path(name=f"file_shartnoma/{user_.name}.pdf")))
     update_fields = {"contract_number": contract_number, "telegram_file_id": response.document.file_id,
                      "file_id": _uuid, "ariza_id": _ariza_uuid, "status": "True"}
     db.update_(telegram_id=telegram_id, updated_fields=update_fields)
-    with open(await get_file_path(name=f"file_shartnoma\\{user_.name}.pdf"), "rb") as file:
+    with open(await get_file_path(name=f"file_shartnoma/{user_.name}.pdf"), "rb") as file:
         await file_create_(user_id=[f"{user_.passport}", _uuid, contract_number],
                            images=[(file, "application/pdf")])
-    with open(await get_file_path(name=f"file_ariza\\{user_.name}.pdf"), "rb") as file:
+    with open(await get_file_path(name=f"file_ariza/{user_.name}.pdf"), "rb") as file:
         await file_create_(user_id=[f"{user_.passport}", _ariza_uuid, contract_number],
                            images=[(file, "application/pdf")])
     file_content = types.InputFile(await get_file_database_path(name='qabul.xlsx'))

@@ -178,13 +178,13 @@ async def check_choose(call: types.CallbackQuery, state: FSMContext):
     await call.message.delete()
     data = await state.get_data()
     if call.data == "qabul_yes":
+        await call.message.answer("Yuborgan arizangiz ko'rib chiqilmoqda ✅")
         await func_qrcode(url=data.get("ariza_uuid"), name=data.get("Name"), status=False)
         await process_document(address=f"{data.get('region')} {data.get('tuman')}da", name=data.get("Name"),
                                file_name=await get_file_database_path(name=faculty_file_map.get(data.get('yonalish'))))
         response = await call.message.answer_document(
-            types.InputFile(await get_file_path(name=f"file_ariza\\{data.get('Name')}.pdf")),
+            types.InputFile(await get_file_path(name=f"file_ariza/{data.get('Name')}.pdf")),
             caption="Sizning arizangiz")
-        await call.message.answer("Yuborgan arizangiz ko'rib chiqilmoqda ✅")
         await dp.bot.send_message(ADMIN_M1,
                                   f"Arizachi:{data.get('Name')}\nPassport:<b>{data.get('passport')}</b>\nViloyat:{data.get('region')}\nTuman:{data.get('tuman')}\nYo'nalish:<b>{faculty_file_map2.get(data.get('yonalish'))}</b>",
                                   reply_markup=await keyboard_func(user_id=call.from_user.id, message=call.message,
