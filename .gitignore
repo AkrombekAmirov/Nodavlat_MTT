@@ -2,8 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-alembic
-alembic.ini
 backup_file
 backup_file/Core/backup_databse.py
 backup_file/Core/restore_database.py
