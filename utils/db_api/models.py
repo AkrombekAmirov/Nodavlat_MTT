@@ -47,6 +47,13 @@ class FileRepository(SQLModel, table=True):
     date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
     time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Hozirgi vaqtdagi o'zgaruvchilarni o'rnatamiz
+        now = datetime.now(timezone('Asia/Tashkent'))
+        self.date = now.strftime("%Y-%m-%d")
+        self.time = now.strftime("%H:%M:%S")
+
 
 class UserGroup(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
@@ -55,3 +62,10 @@ class UserGroup(SQLModel, table=True):
     group_id: str
     date: str = Field(default=datetime.now().strftime("%Y-%m-%d"))
     time: str = Field(default=datetime.now().strftime("%H:%M:%S"))
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Hozirgi vaqtdagi o'zgaruvchilarni o'rnatamiz
+        now = datetime.now(timezone('Asia/Tashkent'))
+        self.date = now.strftime("%Y-%m-%d")
+        self.time = now.strftime("%H:%M:%S")

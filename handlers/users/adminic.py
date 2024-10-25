@@ -80,9 +80,8 @@ async def create_file(telegram_id, faculty):
         await file_create_(user_id=[f"{user_.passport}", _ariza_uuid, contract_number],
                            images=[(file, "application/pdf")])
     file_content = types.InputFile(await get_file_database_path(name='qabul.xlsx'))
-    await dp.bot.send_document(ADMINS, file_content)
+    # await dp.bot.send_document(ADMINS, file_content)
     await dp.bot.send_document(ADMINS, response.document.file_id)
     await dp.bot.send_document(ADMINS, user_.telegram_ariza_id)
     await dp.bot.send_message(ADMINS,
                               f"F.I.Sh:<b>{user_.name}</b>\nPassport:<b>{user_.passport}</b>\nShartnoma raqami:<b>{user_.contract_number}</b>\nFakultet:<b>{user_.faculty}</b>\nTelegram raqami:{user_.telegram_number}\nViloyat:{user_.viloyat}\nTuman:{user_.tuman}")
-
