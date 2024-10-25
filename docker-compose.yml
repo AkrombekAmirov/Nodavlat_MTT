@@ -14,19 +14,18 @@ services:
       - ./pgdata:/var/lib/postgresql/data
     networks:
       - app_network
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: "1"
-#          memory: 1000M
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
   telegram_bot:
     build:
       context: .
       dockerfile: Dockerfile
-#    command: [ "sh", "-c", "python -m uvicorn main:app --reload --host 0.0.0.0 --port 8001" ]
     ports:
-      - "8001:8000"
+      - "8001:8001"
     environment:
       DATABASE_URL: postgresql+psycopg2://admin_user:Mysecret312@postgres:5432/NTMO_database
       BOT_TOKEN: 1808395536:AAGSANn7Cfo6WOFxwbC_LjI6STiSUVVqSR0
@@ -45,6 +44,16 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+
+networks:
+  app_network:
+    driver: bridge
+
 #    deploy:
 #      resources:
 #        limits:
@@ -72,9 +81,6 @@ services:
 #    volumes:
 #      - ./backend_volumes:/var/lib/backend
 
-networks:
-  app_network:
-    driver: bridge
 
 #
 #  backend_migrate:

@@ -1,5 +1,7 @@
 from os.path import join, dirname, exists
 from qrcode import QRCode, constants
+
+from build.lib.file_service.file_database.file_path import get_file_database_path
 from .file_path import get_file_path
 from docx.shared import Inches, Pt
 from openpyxl import load_workbook
@@ -98,7 +100,7 @@ async def func_qrcode(url, name, status: bool = False):
         border=4,
     )
 
-    qr.add_data(f"https://swine-viable-luckily.ngrok-free.app/get_file/{url}")
+    qr.add_data(f"http://zx.tuit.uz/get_file/{url}")
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
@@ -117,7 +119,7 @@ async def convert_pdf(name, status: bool = False):
 
 async def write_qabul(data):
     try:
-        path = await get_file_path("file_database/qabul.xlsx")
+        path = await get_file_database_path("qabul.xlsx")
         workbook = load_workbook(path)
         sheet = workbook.active
         for row in data:
