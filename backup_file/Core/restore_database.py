@@ -4,8 +4,8 @@ from backup_file.file_path import get_file_path
 
 def restore_postgres(backup_file):
     command = [
-        'docker', 'exec', '-i', 'NTMO_kontrakt1',
-        'psql', '-U', 'admin_user1', '-d', 'NTMO_database1'
+        'docker', 'exec', '-i', 'NTMO_kontrakt',
+        'psql', '-U', 'admin_user', '-d', 'NTMO_database'
     ]
     with open(backup_file, 'r') as f:
         try:
