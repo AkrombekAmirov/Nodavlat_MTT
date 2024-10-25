@@ -15,4 +15,4 @@ def restore_postgres(backup_file):
 
 
 if __name__ == "__main__":
-    restore_postgres(get_file_path('Database__2024-10-21_12-00-16.sql'))
+    restore_postgres(get_file_path('backup.sql'))
