@@ -1,7 +1,7 @@
 from os.path import join, dirname, exists
 from qrcode import QRCode, constants
 
-from file_service.file_database.file_path import get_file_database_path
+from build.lib.file_service.file_database.file_path import get_file_database_path
 from .file_path import get_file_path
 from docx.shared import Inches, Pt
 from openpyxl import load_workbook
