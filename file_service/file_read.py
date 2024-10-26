@@ -7,7 +7,7 @@ from docx.shared import Inches, Pt
 from openpyxl import load_workbook
 from os.path import join, dirname
 from datetime import datetime
-# from docx2pdf import convert
+from docx2pdf import convert
 from docx import Document
 from os import remove
 import subprocess
@@ -29,7 +29,7 @@ async def add_qrcode_pcture(paragraph, old_text, new_text, size=1.6):
     for run in paragraph.runs:
         print(run.text)
         if old_text in run.text:
-            run.add_picture(join(dirname(__file__), f"ariza_qrcode/{new_text}.png"),
+            run.add_picture(join(dirname(__file__), f"ariza_qrcode\\{new_text}.png"),
                             width=Inches(size))
 
 
@@ -40,7 +40,7 @@ async def replace_table_text(table, old_text, new_text, font_size=None, bold=Tru
                 for run in paragraph.runs:
                     if old_text in run.text:
                         if old_text == "&":
-                            run.add_picture(join(dirname(__file__), f"file_qrcode/{new_text}.png"),
+                            run.add_picture(join(dirname(__file__), f"file_qrcode\\{new_text}.png"),
                                             width=Inches(size))
                         if old_text != "&":
                             run.text = run.text.replace(old_text, new_text)
@@ -61,7 +61,7 @@ async def process_document(address, name, file_name):
             await replace_text(paragraph, "DATEFULL", f"{datetime.now().strftime('%d.%m.%Y')}    {name}")
         if "&" in paragraph.text:
             await add_qrcode_pcture(paragraph, "&", new_text=f"{name}", size=1.6)
-    doc.save(join(dirname(__file__), f"file_ariza/{name}.docx"))
+    doc.save(join(dirname(__file__), f"file_ariza\\{name}.docx"))
     await convert_pdf(name=name, status=True)
 
 
@@ -88,7 +88,7 @@ async def process_contract(name, faculty, passport, number, address, contract_nu
         await replace_table_text(table=table, old_text="TELNUMBER", new_text=number, font_size=12)
         await replace_table_text(table=table, old_text="ADDRES", new_text=address, font_size=12)
         await replace_table_text(table=table, old_text="&", new_text=name, bold=False)
-    doc.save(join(dirname(__file__), f"file_shartnoma/{name}.docx"))
+    doc.save(join(dirname(__file__), f"file_shartnoma\\{name}.docx"))
     await convert_pdf(name)
 
 
@@ -105,15 +105,15 @@ async def func_qrcode(url, name, status: bool = False):
 
     img = qr.make_image(fill_color="black", back_color="white")
 
-    return img.save(join(dirname(__file__), f"file_qrcode/{name}.png" if status else f"ariza_qrcode/{name}.png"))
+    return img.save(join(dirname(__file__), f"file_qrcode\\{name}.png" if status else f"ariza_qrcode\\{name}.png"))
 
 
 async def convert_pdf(name, status: bool = False):
     directory = "file_ariza" if status else "file_shartnoma"
-    source_path = join(dirname(__file__), f"{directory}/{name}.docx")
+    source_path = join(dirname(__file__), f"{directory}\\{name}.docx")
     target_path = join(dirname(__file__), f"{directory}")
-    # convert(source_path, target_path)
-    subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', source_path, '--outdir', target_path])
+    convert(source_path, target_path)
+    # subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', source_path, '--outdir', target_path])
     remove(source_path) if exists(source_path) else None
 
 
