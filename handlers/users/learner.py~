@@ -58,7 +58,7 @@ async def registration(call: types.CallbackQuery):
         user_ = db.get_user_by_telegram_id(telegram_id=call.from_user.id)
         if user_.telegram_number:
             await call.message.delete()
-            await call.message.answer("O'quv kursi yo'nalishlarini tanlang",
+            await call.message.answer("Malaka oshirish kurslari yo'nalishini tanlang.",
                                       reply_markup=yonalish_nomi_keyboard)
         elif not user_.telegram_number:
             await call.message.answer("Telegram kontaktangizni yuboring.", reply_markup=keyboard)
