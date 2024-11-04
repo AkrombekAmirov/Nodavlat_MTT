@@ -7,7 +7,6 @@ list_region1 = ["Toshkent viloyati", "Toshkent shahri", "Samarqand viloyati", "N
                 "Xorazm viloyati", "Navoiy viloyati", "Buxoro viloyati", "Sirdaryo viloyati",
                 "Qoraqalpogʻiston Respublikasi"]
 
-list_faculty = ["faculty0", "faculty1", "faculty2", "faculty3", "faculty4", "faculty5", "faculty6", "faculty7", "faculty8", "faculty9", "faculty10", "faculty11"]
 faculty_file_map = {
     "faculty0": "ariza_144.docx",
     "faculty1": "ariza_144.docx",
