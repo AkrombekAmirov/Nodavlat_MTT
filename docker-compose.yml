@@ -29,11 +29,11 @@ services:
       - "8001:8001"
     environment:
       DATABASE_URL: postgresql+psycopg2://admin_user:Mysecret312@postgres:5432/NTMO_database
-      BOT_TOKEN: 1808395536:AAGSANn7Cfo6WOFxwbC_LjI6STiSUVVqSR0
+      BOT_TOKEN: 7339678915:AAFA-wM9LLcz756if2-_tH0TJ9Y0cmCof-E
       IP: localhost
-      ADMINS: 765135326
-      ADMIN_M1: 765135326
-      ADMIN_M2: 765135326
+      ADMINS: 353572645
+      ADMIN_M1: 353572645
+      ADMIN_M2: 353572645
     depends_on:
       - postgres
     networks:
