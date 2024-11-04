@@ -150,9 +150,6 @@ response_admin = InlineKeyboardMarkup(inline_keyboard=[
 
 choose_admin = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton(text="📝 GURUHGA BIRIKTIRISH", callback_data="qabul_yes_admin"),
-    ],
-    [
         InlineKeyboardButton(text="❌ O'CHIRISH", callback_data="delete_no_admin"),
     ]
 ])

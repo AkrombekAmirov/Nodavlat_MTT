@@ -1,11 +1,13 @@
 from os.path import join, dirname, exists
 from qrcode import QRCode, constants
+
+from file_service.file_database.file_path import get_file_database_path
 from .file_path import get_file_path
 from docx.shared import Inches, Pt
 from openpyxl import load_workbook
 from os.path import join, dirname
 from datetime import datetime
-# from docx2pdf import convert
+from docx2pdf import convert
 from docx import Document
 from os import remove
 import subprocess
@@ -98,7 +100,7 @@ async def func_qrcode(url, name, status: bool = False):
         border=4,
     )
 
-    qr.add_data(f"https://swine-viable-luckily.ngrok-free.app/get_file/{url}")
+    qr.add_data(f"http://zx.tuit.uz/get_file/{url}")
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
@@ -110,14 +112,15 @@ async def convert_pdf(name, status: bool = False):
     directory = "file_ariza" if status else "file_shartnoma"
     source_path = join(dirname(__file__), f"{directory}/{name}.docx")
     target_path = join(dirname(__file__), f"{directory}")
-    # convert(source_path, target_path)
-    subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', source_path, '--outdir', target_path])
+    print(source_path, target_path)
+    convert(source_path, target_path)
+    # subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', source_path, '--outdir', target_path])
     remove(source_path) if exists(source_path) else None
 
 
 async def write_qabul(data):
     try:
-        path = await get_file_path("file_database/qabul.xlsx")
+        path = await get_file_database_path("qabul.xlsx")
         workbook = load_workbook(path)
         sheet = workbook.active
         for row in data:
