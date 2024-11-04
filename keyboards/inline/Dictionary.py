@@ -22,7 +22,7 @@ faculty_file_map = {
     "faculty11": "ariza_864.docx"
 }
 faculty_file_map1 = {
-    "faculty0": "ariza_144.docx",
+    "faculty0": "shartnoma_144.docx",
     "faculty1": "shartnoma_144.docx",
     "faculty2": "shartnoma_144.docx",
     "faculty3": "shartnoma_144.docx",
@@ -140,7 +140,8 @@ Navoiy = [
     "Navoiy shahri",
     "Nurota tumani",
     "Tomdi tumani",
-    "Uchquduq tumani"
+    "Uchquduq tumani",
+    "Zarafshon tumani"
 ]
 
 Namangan = [
@@ -328,7 +329,7 @@ list_tuman = ["Amudaryo tumani", "Beruniy tumani", "Chimboy tumani", "Ellikqalʼ
               "Urgut tumani", "Bekobod tumani", "Boʻstonliq tumani", "Boʻka tumani", "Chinoz tumani", "Qibray tumani",
               "Ohangaron tumani", "Oqqoʻrgʻon tumani", "Parkent tumani", "Piskent tumani", "Quyi chirchiq tumani",
               "Oʻrta Chirchiq tumani", "Yangiyoʻl tumani", "Yuqori Chirchiq tumani", "Zangiota tumani", "Navoiy shahri",
-              ]
+              "Zarafshon tumani"]
 
 
 # Tumanlar uchun InlineKeyboardMarkup yaratish

@@ -140,11 +140,13 @@ async def save_user_files(user_, uuid, ariza_uuid, contract_number):
     """Foydalanuvchi uchun fayllarni yaratish va saqlash"""
     for file_name, file_uuid in [("file_shartnoma", uuid), ("file_ariza", ariza_uuid)]:
         file_path = await get_file_path(name=f"{file_name}/{user_.name}.pdf")
-        with open(file_path, "rb") as file:
+        async with aiofiles.open(file_path, "rb") as file:
+            file_content = await file.read()  # `file_content` ni to'g'ridan-to'g'ri o'qiymiz
             await file_create_(
                 user_id=[f"{user_.passport}", file_uuid, contract_number],
-                images=[(file, "application/pdf")]
+                images=[(file_content, "application/pdf")]  # `file_content` ni qayta `read` chaqirmasdan ishlatamiz
             )
+
 
 
 
