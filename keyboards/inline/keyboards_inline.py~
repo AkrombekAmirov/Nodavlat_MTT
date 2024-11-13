@@ -129,7 +129,7 @@ response_admin = InlineKeyboardMarkup(inline_keyboard=[
     ]
 ])
 
-choose_admin_1 = InlineKeyboardMarkup(inline_keyboard=[
+choose_admin = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(text="❌ O'CHIRISH", callback_data="delete_no_admin"),
     ]
