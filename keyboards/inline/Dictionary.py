@@ -188,7 +188,8 @@ Fargona = [
     "Uchkoʻprik tumani",
     "Oʻzbekiston tumani",
     "Yozyovon tumani",
-    "Quvasoy shahri"
+    "Quvasoy shahri",
+    "Margʻilon tumani"
 ]
 
 # Qashqadaryo viloyati tumanlari
@@ -330,7 +331,7 @@ list_tuman = ["Amudaryo tumani", "Beruniy tumani", "Chimboy tumani", "Ellikqalʼ
               "Urgut tumani", "Bekobod tumani", "Boʻstonliq tumani", "Boʻka tumani", "Chinoz tumani", "Qibray tumani",
               "Ohangaron tumani", "Oqqoʻrgʻon tumani", "Parkent tumani", "Piskent tumani", "Quyi chirchiq tumani",
               "Oʻrta Chirchiq tumani", "Yangiyoʻl tumani", "Yuqori Chirchiq tumani", "Zangiota tumani", "Navoiy shahri",
-              "Zarafshon tumani"]
+              "Zarafshon tumani", "Margʻilon tumani"]
 
 
 # Tumanlar uchun InlineKeyboardMarkup yaratish
