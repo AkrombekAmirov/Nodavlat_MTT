@@ -109,16 +109,11 @@ class DatabaseService:
             session.close()
 
     def delete_user(self, passport: str):
-        try:
-            with Session(self.engine) as session:
-                user = session.query(User).filter_by(passport=passport).first()
-                if user:
-                    session.delete(user)
-                    session.commit()
-                    return True
-                else:
-                    return False
-        except Exception as e:
-            return e
-        finally:
-            session.close()
+        with Session(self.engine) as session:
+            user = session.query(User).filter_by(passport=passport).first()
+            if user:
+                session.delete(user)
+                session.commit()
+                return True
+            else:
+                return False
