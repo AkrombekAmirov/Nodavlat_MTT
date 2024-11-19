@@ -66,7 +66,12 @@ Toshkent_viloyat = [
     "Oʻrta Chirchiq tumani",
     "Yangiyoʻl tumani",
     "Yuqori Chirchiq tumani",
-    "Zangiota tumani"
+    "Zangiota tumani",
+    "Olmaliq shahri",
+    'Angren shahri',
+    'Nurafshon shahri',
+    'Chirchiq shahri',
+    'Piskent'
 ]
 
 Toshkent_shahri = [
@@ -97,15 +102,17 @@ Samarqand = [
     "Payariq tumani",
     "Pastdargʻom tumani",
     "Samarqand tumani",
+    "Samarqand shahri",
     "Toyloq tumani",
     "Urgut tumani"
 ]
 
 Andijon = [
     "Andijon tuman",
+    "Andijon shahri",
     "Asaka tumani",
     "Baliqchi tumani",
-    "Bo'stontuman",
+    "Bo'ston tuman",
     "Buloqboshi tumani",
     "Izboskan tuman",
     "Jalaquduq tuman",
@@ -115,7 +122,8 @@ Andijon = [
     "Oltinkoʻl tuman",
     "Paxtaobod tumani",
     "Shahrixon tuman",
-    "Ulugʻnor tuman"
+    "Ulugʻnor tuman",
+    'Xonobod shahri',
 ]
 
 Buxoro = [
@@ -142,7 +150,8 @@ Navoiy = [
     "Nurota tumani",
     "Tomdi tumani",
     "Uchquduq tumani",
-    "Zarafshon tumani"
+    "Zarafshon shahri",
+    "G'azg'on shahri"
 ]
 
 Namangan = [
@@ -157,6 +166,9 @@ Namangan = [
     "Uchqoʻrgʻon tumani",
     "Uychi tumani",
     "Yangiqoʻrgʻon tumani",
+    'Namangan shahar',
+    'Yangi Namangan',
+    'Davlatobod'
 ]
 
 # Namangan viloyati tumanlari
@@ -179,6 +191,7 @@ Fargona = [
     "Buvayda tumani",
     "Dangʻara tumani",
     "Fargʻona tumani",
+    'Farg‘ona shahri'
     "Furqat tumani",
     "Qoʻshtepa tumani",
     "Quva tumani",
@@ -189,7 +202,8 @@ Fargona = [
     "Oʻzbekiston tumani",
     "Yozyovon tumani",
     "Quvasoy shahri",
-    "Margʻilon tumani"
+    "Margʻilon tumani",
+    'Qo‘qon shahri',
 ]
 
 # Qashqadaryo viloyati tumanlari
@@ -224,7 +238,9 @@ Surxondaryo = [
     "Sherobod tumani",
     "Shoʻrchi tumani",
     "Termiz tumani",
-    "Uzun tumani"
+    "Uzun tumani",
+    'Termiz shahri',
+    'Bandixon'
 ]
 
 # Jizzax viloyati tumanlari
@@ -240,7 +256,8 @@ Jizzax = [
     "Yangiobod tumani",
     "Zomin tumani",
     "Zafarobod tumani",
-    "Zarbdor tumani"
+    "Zarbdor tumani",
+    'Jizzax shahri'
 ]
 
 # Xorazm viloyati tumanlari
@@ -255,7 +272,9 @@ Xorazm = [
     "Urganch tumani",
     "Yangiariq tumani",
     "Yangibozor tumani",
-    "Tuproqqalʼa tumani"
+    "Tuproqqalʼa tumani",
+    "Urganch shahri",
+    "Xiva shahri"
 ]
 
 # Sirdaryo viloyati tumanlari
@@ -331,7 +350,11 @@ list_tuman = ["Amudaryo tumani", "Beruniy tumani", "Chimboy tumani", "Ellikqalʼ
               "Urgut tumani", "Bekobod tumani", "Boʻstonliq tumani", "Boʻka tumani", "Chinoz tumani", "Qibray tumani",
               "Ohangaron tumani", "Oqqoʻrgʻon tumani", "Parkent tumani", "Piskent tumani", "Quyi chirchiq tumani",
               "Oʻrta Chirchiq tumani", "Yangiyoʻl tumani", "Yuqori Chirchiq tumani", "Zangiota tumani", "Navoiy shahri",
-              "Zarafshon tumani", "Margʻilon tumani"]
+              "Zarafshon tumani", "Margʻilon tumani","Olmaliq shahri", 'Angren shahri', 'Nurafshon shahri', 'Chirchiq shahri', 'Piskent',
+              "Samarqand shahri", 'Xonobod shahri', "Andijon shahri", 'Farg‘ona shahri', 'Qo‘qon shahri', 'Namangan shahar',
+              'Yangi Namangan', 'Davlatobod', 'Bandixon', 'Termiz shahri', 'Jizzax shahri', "Urganch shahri", "Xiva shahri",
+              "Zarafshon shahri", "G'azg'on shahri"
+              ]
 
 
 # Tumanlar uchun InlineKeyboardMarkup yaratish
