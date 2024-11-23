@@ -83,7 +83,7 @@ Toshkent_shahri = [
     "Sergeli tumani",
     "Shayxontohur tumani",
     "Olmazor tumani",
-    "Uchtepa (Toshkent)",
+    "Uchtepa tumani",
     "Yakkasaroy tumani",
     "Yunusobod tumani",
     "Yangihayot tumani",
@@ -168,7 +168,7 @@ Namangan = [
     "Yangiqoʻrgʻon tumani",
     'Namangan shahar',
     'Yangi Namangan',
-    'Davlatobod'
+    'Davlatobod tumani',
 ]
 
 # Namangan viloyati tumanlari
@@ -240,7 +240,7 @@ Surxondaryo = [
     "Termiz tumani",
     "Uzun tumani",
     'Termiz shahri',
-    'Bandixon'
+    'Bandixon tumani',
 ]
 
 # Jizzax viloyati tumanlari
@@ -343,7 +343,7 @@ list_tuman = ["Amudaryo tumani", "Beruniy tumani", "Chimboy tumani", "Ellikqalʼ
               "Buloqboshi tumani", "Izboskan tuman", "Jalaquduq tuman", "Xoʻjaobod tumani", "Qoʻrgʻontepa tumani",
               "Marhamat tumani", "Oltinkoʻl tuman", "Paxtaobod tumani", "Shahrixon tuman", "Ulugʻnor tuman",
               "Bektemir tumani", "Chilonzor tumani", "Yashnaobod tumani", "Mirobod tumani", "Mirzo Ulugʻbek tumani",
-              "Sergeli tumani", "Shayxontohur tumani", "Olmazor tumani", "Uchtepa (Toshkent)", "Yakkasaroy tumani",
+              "Sergeli tumani", "Shayxontohur tumani", "Olmazor tumani", "Uchtepa tumani", "Yakkasaroy tumani",
               "Yunusobod tumani", "Yangihayot tumani", "Bulungʻur tumani", "Ishtixon tumani", "Jomboy tumani",
               "Kattaqoʻrgʻon tumani", "Qoʻshrabot tumani", "Narpay tumani", "Nurobod tumani", "Oqdaryo tumani",
               "Paxtachi tumani", "Payariq tumani", "Pastdargʻom tumani", "Samarqand tumani", "Toyloq tumani",
@@ -352,7 +352,7 @@ list_tuman = ["Amudaryo tumani", "Beruniy tumani", "Chimboy tumani", "Ellikqalʼ
               "Oʻrta Chirchiq tumani", "Yangiyoʻl tumani", "Yuqori Chirchiq tumani", "Zangiota tumani", "Navoiy shahri",
               "Zarafshon tumani", "Margʻilon tumani","Olmaliq shahri", 'Angren shahri', 'Nurafshon shahri', 'Chirchiq shahri', 'Piskent',
               "Samarqand shahri", 'Xonobod shahri', "Andijon shahri", 'Farg‘ona shahri', 'Qo‘qon shahri', 'Namangan shahar',
-              'Yangi Namangan', 'Davlatobod', 'Bandixon', 'Termiz shahri', 'Jizzax shahri', "Urganch shahri", "Xiva shahri",
+              'Yangi Namangan', 'Davlatobod tumani', 'Bandixon tumani', 'Termiz shahri', 'Jizzax shahri', "Urganch shahri", "Xiva shahri",
               "Zarafshon shahri", "G'azg'on shahri"
               ]
 
