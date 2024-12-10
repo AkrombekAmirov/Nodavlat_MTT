@@ -9,6 +9,7 @@ BOT_TOKEN = environ.get("BOT_TOKEN")  # Bot toekn
 ADMINS = environ.get("ADMINS")  # adminlar ro'yxati
 ADMIN_M1 = environ.get("ADMIN_M1")
 ADMIN_M2 = environ.get("ADMIN_M2")
+CHANEL = environ.get("CHANEL")
 IP = environ.get("IP")  # Xosting ip manzili
 
 engine = create_engine(environ.get("DATABASE_URL"))
